@@ -1,5 +1,5 @@
 <script lang="typescript">
-    import { INft } from '@core/nfts'
+    import { DownloadErrorType, DownloadWarningType, INft } from '@core/nfts'
     import { Text, FontWeight, NftMedia, TooltipIcon, Position } from 'shared/components'
     import { CollectiblesRoute, collectiblesRouter } from '@core/router'
     import { selectedNftId } from '@core/nfts/stores'
@@ -15,17 +15,21 @@
     }
 
     let tooltipContent
-    $: if (nft.downloadError) {
+    $: if (nft.error) {
         tooltipContent = {
             icon: 'error-filled',
             iconClasses: 'fill-current text-red-700',
-            text: nft.downloadError + '.short',
+            text:
+                nft.error.type === DownloadErrorType.Generic ? nft.error.message : `error.nft.${nft.error.type}.short`,
         }
-    } else if (nft.downloadWarning) {
+    } else if (nft.warning) {
         tooltipContent = {
             icon: 'exclamation-filled',
             iconClasses: 'fill-current text-yellow-700',
-            text: nft.downloadWarning + '.short',
+            text:
+                nft.warning.type === DownloadWarningType.Generic
+                    ? nft.warning.message
+                    : `error.nft.${nft.warning.type}.short`,
         }
     }
 </script>
@@ -43,7 +47,7 @@
                 loop
                 muted
             />
-            {#if nft.downloadError || nft.downloadWarning}
+            {#if nft.error || nft.warning}
                 <div class="absolute right-3 top-3">
                     <TooltipIcon
                         height={24}

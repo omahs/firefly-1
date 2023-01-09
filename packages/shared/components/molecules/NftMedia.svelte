@@ -17,7 +17,7 @@
     $: nft = getNftByIdFromAllAccountNfts($selectedAccountIndex, nftId)
 </script>
 
-{#if !nft.composedUrl || !nft.isLoaded}
+{#if !nft?.composedUrl || !nft?.isLoaded}
     <slot name="placeholder">
         <MediaPlaceholder type={nft?.parsedMetadata?.type} {bgColor} {darkBgColor} />
     </slot>

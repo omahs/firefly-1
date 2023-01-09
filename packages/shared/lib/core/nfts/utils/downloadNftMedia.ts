@@ -32,7 +32,7 @@ export async function downloadNftMedia(nft: INft, accountIndex: number): Promise
             nft.isLoaded = true
         }
     } catch (err) {
-        nft = { ...nft, isLoaded: false, error: { type: DownloadErrorType.Generic, message: err } }
+        nft = { ...nft, isLoaded: false, error: { type: DownloadErrorType.Generic, message: err.message } }
     }
     addOrUpdateNftInAllAccountNfts(accountIndex, nft)
 }

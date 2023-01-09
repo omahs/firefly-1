@@ -5,7 +5,14 @@
     import { localize } from '@core/i18n'
     import { ExplorerEndpoint, getOfficialExplorerUrl } from '@core/network'
     import { BASE_TOKEN } from '@core/network/constants'
-    import { convertAndFormatNftMetadata, getNftByIdFromAllAccountNfts, INft, selectedNftId } from '@core/nfts'
+    import {
+        convertAndFormatNftMetadata,
+        DownloadErrorType,
+        DownloadWarningType,
+        getNftByIdFromAllAccountNfts,
+        INft,
+        selectedNftId,
+    } from '@core/nfts'
     import { activeProfile } from '@core/profile/stores'
     import { truncateString } from '@core/utils'
     import {
@@ -53,6 +60,17 @@
     )
 
     $: formattedMetadata = convertAndFormatNftMetadata(metadata)
+
+    let alertText
+    $: if (nft.error) {
+        alertText =
+            nft.error.type === DownloadErrorType.Generic ? nft.error.message : `error.nft.${nft.error.type}.long`
+    } else if (nft.warning) {
+        alertText =
+            nft.warning.type === DownloadWarningType.Generic
+                ? nft.warning.message
+                : `error.nft.${nft.warning.type}.long`
+    }
 
     let detailsList: {
         [key in string]: {
@@ -130,10 +148,10 @@
                 muted
             />
             <div class="absolute right-6 bottom-6 w-auto">
-                {#if nft.downloadError}
-                    <Alert type="error" message={nft.downloadError} />
-                {:else if nft.downloadWarning}
-                    <Alert type="warning" message={nft.downloadWarning} />
+                {#if nft.error}
+                    <Alert type="error" message={alertText} />
+                {:else if nft.warning}
+                    <Alert type="warning" message={alertText} />
                 {/if}
             </div>
         </div>
