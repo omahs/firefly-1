@@ -64,12 +64,14 @@
     let alertText
     $: if (nft.error) {
         alertText =
-            nft.error.type === DownloadErrorType.Generic ? nft.error.message : `error.nft.${nft.error.type}.long`
+            nft.error.type === DownloadErrorType.Generic
+                ? nft.error.message
+                : localize(`error.nft.${nft.error.type}.long`)
     } else if (nft.warning) {
         alertText =
             nft.warning.type === DownloadWarningType.Generic
                 ? nft.warning.message
-                : `error.nft.${nft.warning.type}.long`
+                : localize(`error.nft.${nft.warning.type}.long`)
     }
 
     let detailsList: {
