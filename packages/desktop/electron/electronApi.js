@@ -240,6 +240,13 @@ const ElectronApi = {
     close() {
         return ipcRenderer.invoke('close')
     },
+    downloadFile(url, destinationFilePath) {
+        return ipcRenderer.invoke('download', {
+            url: url,
+            destination: destinationFilePath,
+            properties: { saveAs: false },
+        })
+    },
     /*
      * Opens url and checks against acceptlist
      * @param {string} url - Target url

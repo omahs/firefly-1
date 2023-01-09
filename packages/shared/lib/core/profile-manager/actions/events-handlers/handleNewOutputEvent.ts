@@ -1,5 +1,10 @@
 import { syncBalance } from '@core/account/actions/syncBalance'
-import { addOrUpdateNftInAllAccountNfts, buildNftFromNftOutput, getIsSpendableFromUnspentNftOutput } from '@core/nfts'
+import {
+    addOrUpdateNftInAllAccountNfts,
+    buildNftFromNftOutput,
+    downloadNftMedia,
+    getIsSpendableFromUnspentNftOutput,
+} from '@core/nfts'
 import { activeAccounts } from '@core/profile/stores'
 import { ActivityType, addPersistedAsset, generateActivities, getOrRequestAssetFromPersistedAssets } from '@core/wallet'
 import { OUTPUT_TYPE_ALIAS, OUTPUT_TYPE_NFT } from '@core/wallet/constants'
@@ -53,6 +58,7 @@ export async function handleNewOutputEventInternal(
     if (isNftOutput) {
         const isSpendable = getIsSpendableFromUnspentNftOutput(account.depositAddress, output.output as INftOutput)
         const nft = buildNftFromNftOutput(output.output as INftOutput, output.outputId, isSpendable)
+        void downloadNftMedia(nft, accountIndex)
         addOrUpdateNftInAllAccountNfts(account.index, nft)
     }
 }

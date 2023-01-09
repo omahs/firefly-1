@@ -10,4 +10,9 @@ export interface INft {
     parsedMetadata?: IIrc27Metadata
     isSpendable: boolean
     latestOutputId: string
+    composedUrl: string
+    filePath: string
+    downloadWarning: string
+    downloadError: string
+    isLoaded: boolean
 }

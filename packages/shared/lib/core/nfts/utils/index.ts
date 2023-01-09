@@ -1,5 +1,7 @@
 export * from './buildNftFromNftOutput'
 export * from './convertAndFormatNftMetadata'
+export * from './downloadNftMedia'
+export * from './downloadAllNftMedia'
 export * from './getIsSpendableFromUnspentNftOutput'
 export * from './parseNftMetadata'
 export * from './rewriteIpfsUri'
