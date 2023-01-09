@@ -33,8 +33,6 @@
     } from 'shared/components'
 
     let modal: Modal
-    let error: string
-    let warning: string
 
     const explorerUrl = getOfficialExplorerUrl($activeProfile?.networkProtocol, $activeProfile?.networkType)
     const nft: INft = getNftByIdFromAllAccountNfts($selectedAccountIndex, $selectedNftId)
@@ -125,8 +123,6 @@
         <div class="relative w-full h-full flex rounded-2xl overflow-hidden">
             <NftMedia
                 nftId={id}
-                bind:error
-                bind:warning
                 classes="rounded-2xl overflow-hidden flex-1 w-auto h-auto max-w-full max-h-full object-contain absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                 autoplay
                 controls
@@ -134,10 +130,10 @@
                 muted
             />
             <div class="absolute right-6 bottom-6 w-auto">
-                {#if error}
-                    <Alert type="error" message={error} />
-                {:else if warning}
-                    <Alert type="warning" message={warning} />
+                {#if nft.downloadError}
+                    <Alert type="error" message={nft.downloadError} />
+                {:else if nft.downloadWarning}
+                    <Alert type="warning" message={nft.downloadWarning} />
                 {/if}
             </div>
         </div>

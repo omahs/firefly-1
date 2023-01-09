@@ -1,26 +1,18 @@
 <script lang="typescript">
     import { MimeType, ParentMimeType } from '@core/nfts'
-    import { activeProfile } from '@core/profile'
 
     export let Media: HTMLImageElement | HTMLVideoElement = undefined
-    export let src: string
+    export let filePath: string
+    export let isLoaded: boolean
     export let expectedType: MimeType
     export let classes: string = ''
     export let alt = ''
-    export let onError: (a?: string) => unknown
-    export let onWarning: (a?: string) => unknown
-    export let onLoad: () => unknown
     export let autoplay: boolean = false
     export let controls: boolean = false
     export let muted: boolean = false
     export let loop: boolean = false
 
     const type: string = convertMimeTypeToHtmlTag(expectedType)
-    let safeToLoad = false
-    let isLoaded = false
-    const MAX_FILE_SIZE_IN_BYTES = ($activeProfile?.settings?.maxMediaSizeInMegaBytes ?? 0) * 1000000
-
-    $: src && void checkContentIsSafeToLoad()
     $: isLoaded && muteVideo()
 
     function muteVideo() {
@@ -49,52 +41,16 @@
             case ParentMimeType.Video:
                 return 'video'
             default:
-                onWarning('error.nft.unsupportedFileType.')
                 return undefined
-        }
-    }
-
-    function handleLoadedMetadata() {
-        isLoaded = true
-        if (type === 'video') {
-            onLoad && onLoad()
-        }
-    }
-
-    function handleLoaded() {
-        isLoaded = true
-        onLoad && onLoad()
-    }
-
-    async function checkContentIsSafeToLoad() {
-        try {
-            if (type && src && typeof src === 'string') {
-                const response = await fetch(src, { method: 'HEAD', cache: 'force-cache' })
-                if (response.headers.get('Content-Type') !== expectedType) {
-                    safeToLoad = false
-                    onError('error.nft.notMatchingFileTypes.')
-                } else if (
-                    MAX_FILE_SIZE_IN_BYTES > 0 &&
-                    Number(response.headers.get('Content-Length')) > MAX_FILE_SIZE_IN_BYTES
-                ) {
-                    safeToLoad = false
-                    onWarning('error.nft.tooLargeFile.')
-                } else {
-                    safeToLoad = true
-                }
-            }
-        } catch (error) {
-            safeToLoad = false
-            onError('error.nft.unsafeToLoad.')
         }
     }
 </script>
 
-{#if safeToLoad}
+{#key isLoaded}
     <svelte:element
         this={type}
         bind:this={Media}
-        {src}
+        src="build/{filePath}"
         {alt}
         autoplay={autoplay ? true : undefined}
         controls={controls ? true : undefined}
@@ -102,10 +58,7 @@
         muted
         class={classes}
         preload="metadata"
-        on:load={handleLoaded}
-        on:loadedmetadata={handleLoadedMetadata}
-        on:error={onError}
         on:mouseenter={startPlaying}
         on:mouseleave={stopPlaying}
     />
-{/if}
+{/key}
