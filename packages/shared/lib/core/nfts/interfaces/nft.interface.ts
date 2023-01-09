@@ -1,4 +1,5 @@
 import { AddressTypes } from '@iota/types'
+import { DownloadErrorType, DownloadWarningType } from '../enums'
 import { IIrc27Metadata } from '../interfaces'
 
 export interface INft {
@@ -12,7 +13,13 @@ export interface INft {
     latestOutputId: string
     composedUrl: string
     filePath: string
-    downloadWarning: string
-    downloadError: string
+    error: {
+        type: DownloadErrorType
+        message?: string
+    }
+    warning: {
+        type: DownloadWarningType
+        message?: string
+    }
     isLoaded: boolean
 }
