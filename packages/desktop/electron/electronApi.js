@@ -241,11 +241,7 @@ const ElectronApi = {
         return ipcRenderer.invoke('close')
     },
     downloadFile(url, destinationFilePath) {
-        return ipcRenderer.invoke('download', {
-            url: url,
-            destination: destinationFilePath,
-            properties: { saveAs: false },
-        })
+        return ipcRenderer.invoke('download', url, destinationFilePath)
     },
     /*
      * Opens url and checks against acceptlist

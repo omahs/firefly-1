@@ -412,11 +412,11 @@ ipcMain.handle('copy-file', (_e, sourceFilePath, destinationFilePath) => {
     fs.writeFileSync(dest, srcFileBuffer)
 })
 
-ipcMain.handle('download', (event, info) =>
-    download(BrowserWindow.getFocusedWindow(), info.url, {
+ipcMain.handle('download', (event, url, destination) =>
+    download(windows.main, url, {
         directory: __dirname,
-        filename: info.destination,
-        ...info.properties,
+        filename: destination,
+        properties: { saveAs: false },
     })
 )
 
