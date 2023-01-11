@@ -412,13 +412,13 @@ ipcMain.handle('copy-file', (_e, sourceFilePath, destinationFilePath) => {
     fs.writeFileSync(dest, srcFileBuffer)
 })
 
-ipcMain.handle('download', (event, url, destination) =>
+ipcMain.handle('download', (event, url, destination) => {
     download(windows.main, url, {
         directory: __dirname,
         filename: destination,
         properties: { saveAs: false },
     })
-)
+})
 
 // Diagnostics
 const getDiagnostics = () => {
