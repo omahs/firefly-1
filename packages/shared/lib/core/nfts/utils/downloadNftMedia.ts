@@ -2,11 +2,12 @@ import { Platform } from '@core/app'
 import { activeProfile, activeProfileId } from '@core/profile'
 import { get } from 'svelte/store'
 import { addOrUpdateNftInAllAccountNfts } from '../actions'
+import { BYTES_PER_MEGABYTE } from '../constants'
 import { DownloadErrorType, DownloadWarningType } from '../enums'
 import { INft } from '../interfaces'
 
 export async function downloadNftMedia(nft: INft, accountIndex: number): Promise<void> {
-    const MAX_FILE_SIZE_IN_BYTES = (get(activeProfile)?.settings?.maxMediaSizeInMegaBytes ?? 0) * 1000000
+    const MAX_FILE_SIZE_IN_BYTES = (get(activeProfile)?.settings?.maxMediaSizeInMegaBytes ?? 0) * BYTES_PER_MEGABYTE
 
     try {
         const filePath = `${get(activeProfileId)}/${nft.id}`
