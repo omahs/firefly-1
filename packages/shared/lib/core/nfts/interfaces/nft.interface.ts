@@ -13,13 +13,17 @@ export interface INft {
     latestOutputId: string
     composedUrl: string
     filePath: string
-    error: {
+    downloadMetadata: DownloadMetadata
+}
+
+export interface DownloadMetadata {
+    isLoaded: boolean
+    error?: {
         type: DownloadErrorType
         message?: string
     }
-    warning: {
+    warning?: {
         type: DownloadWarningType
         message?: string
     }
-    isLoaded: boolean
 }

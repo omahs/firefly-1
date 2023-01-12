@@ -33,9 +33,11 @@ export function buildNftFromNftOutput(nftOutput: INftOutput, outputId: string, i
         latestOutputId: outputId,
         composedUrl,
         filePath,
-        error: undefined,
-        warning: undefined,
-        isLoaded: false,
+        downloadMetadata: {
+            error: undefined,
+            warning: undefined,
+            isLoaded: false,
+        },
     }
 }
 
