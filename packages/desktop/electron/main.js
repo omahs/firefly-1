@@ -412,12 +412,15 @@ ipcMain.handle('copy-file', (_e, sourceFilePath, destinationFilePath) => {
     fs.writeFileSync(dest, srcFileBuffer)
 })
 
-ipcMain.handle('download', (event, url, destination) => {
-    download(windows.main, url, {
-        directory: __dirname,
-        filename: destination,
-        saveAs: false,
-    })
+ipcMain.handle('download', async (event, url, destination) => {
+    try {
+        await download(windows.main, url, {
+            directory: __dirname,
+            filename: destination,
+        })
+    } catch (err) {
+        return Promise.reject(err)
+    }
 })
 
 // Diagnostics
