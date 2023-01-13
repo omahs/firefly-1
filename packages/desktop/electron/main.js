@@ -416,7 +416,7 @@ ipcMain.handle('download', (event, url, destination) => {
     download(windows.main, url, {
         directory: __dirname,
         filename: destination,
-        properties: { saveAs: false },
+        saveAs: false,
     })
 })
 
