@@ -17,14 +17,14 @@
     $: nft = getNftByIdFromAllAccountNfts($selectedAccountIndex, nftId)
 </script>
 
-{#if !nft?.composedUrl || !nft?.isLoaded}
+{#if !nft?.composedUrl || !nft.downloadMetadata.isLoaded}
     <slot name="placeholder">
         <MediaPlaceholder type={nft?.parsedMetadata?.type} {bgColor} {darkBgColor} />
     </slot>
 {:else}
     <MediaDisplay
         filePath={nft.filePath}
-        isLoaded={nft.isLoaded}
+        isLoaded={nft.downloadMetadata.isLoaded}
         expectedType={nft.parsedMetadata.type}
         alt={`Media display for ${nft.name}`}
         {autoplay}

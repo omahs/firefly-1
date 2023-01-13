@@ -15,21 +15,23 @@
     }
 
     let tooltipContent
-    $: if (nft.error) {
+    $: if (nft.downloadMetadata.error) {
         tooltipContent = {
             icon: 'error-filled',
             iconClasses: 'fill-current text-red-700',
             text:
-                nft.error.type === DownloadErrorType.Generic ? nft.error.message : `error.nft.${nft.error.type}.short`,
+                nft.downloadMetadata.error.type === DownloadErrorType.Generic
+                    ? nft.downloadMetadata.error.message
+                    : `error.nft.${nft.downloadMetadata.error.type}.short`,
         }
-    } else if (nft.warning) {
+    } else if (nft.downloadMetadata.warning) {
         tooltipContent = {
             icon: 'exclamation-filled',
             iconClasses: 'fill-current text-yellow-700',
             text:
-                nft.warning.type === DownloadWarningType.Generic
-                    ? nft.warning.message
-                    : `error.nft.${nft.warning.type}.short`,
+                nft.downloadMetadata.warning.type === DownloadWarningType.Generic
+                    ? nft.downloadMetadata.warning.message
+                    : `error.nft.${nft.downloadMetadata.warning.type}.short`,
         }
     }
 </script>
@@ -47,7 +49,7 @@
                 loop
                 muted
             />
-            {#if nft.error || nft.warning}
+            {#if nft.downloadMetadata.error || nft.downloadMetadata.warning}
                 <div class="absolute right-3 top-3">
                     <TooltipIcon
                         height={24}

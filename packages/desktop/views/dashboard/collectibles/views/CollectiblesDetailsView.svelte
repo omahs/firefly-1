@@ -62,16 +62,16 @@
     $: formattedMetadata = convertAndFormatNftMetadata(metadata)
 
     let alertText
-    $: if (nft.error) {
+    $: if (nft.downloadMetadata.error) {
         alertText =
-            nft.error.type === DownloadErrorType.Generic
-                ? nft.error.message
-                : localize(`error.nft.${nft.error.type}.long`)
-    } else if (nft.warning) {
+            nft.downloadMetadata.error.type === DownloadErrorType.Generic
+                ? nft.downloadMetadata.error.message
+                : localize(`error.nft.${nft.downloadMetadata.error.type}.long`)
+    } else if (nft.downloadMetadata.warning) {
         alertText =
-            nft.warning.type === DownloadWarningType.Generic
-                ? nft.warning.message
-                : localize(`error.nft.${nft.warning.type}.long`)
+            nft.downloadMetadata.warning.type === DownloadWarningType.Generic
+                ? nft.downloadMetadata.warning.message
+                : localize(`error.nft.${nft.downloadMetadata.warning.type}.long`)
     }
 
     let detailsList: {
@@ -150,9 +150,9 @@
                 muted
             />
             <div class="absolute right-6 bottom-6 w-auto">
-                {#if nft.error}
+                {#if nft.downloadMetadata.error}
                     <Alert type="error" message={alertText} />
-                {:else if nft.warning}
+                {:else if nft.downloadMetadata.warning}
                     <Alert type="warning" message={alertText} />
                 {/if}
             </div>
