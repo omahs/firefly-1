@@ -177,28 +177,23 @@ if (app.isPackaged) {
 }
 
 /**
- * Check URL against blocklist
- */
-function isUrlAllowed(targetUrl) {
-    const externalBlocklist = ['localhost']
-    const url = new URL(targetUrl)
-    const domain = url.hostname.replace(/^www\./, '')
-
-    return !externalBlocklist.includes(domain) && !externalBlocklist.includes(domain + url.pathname)
-}
-
-/**
  * Handles url navigation events
  */
 const handleNavigation = (e, url) => {
-    e.preventDefault()
-
-    try {
-        if (isUrlAllowed(url)) {
-            shell.openExternal(url)
+    if (url === 'http://localhost:8080/') {
+        // if localhost would be opened on the build versions, we need to block it to prevent errors
+        if (app.isPackaged) {
+            e.preventDefault()
         }
-    } catch (err) {
-        console.error(err)
+        // else: re-open localhost in electron for hot reload
+    } else {
+        e.preventDefault()
+
+        try {
+            shell.openExternal(url)
+        } catch (err) {
+            console.error(err)
+        }
     }
 }
 
@@ -307,7 +302,7 @@ function createWindow() {
      * Handle permissions requests
      */
     session.defaultSession.setPermissionRequestHandler((_webContents, permission, cb, details) => {
-        if (permission === 'openExternal' && details && details.externalURL && isUrlAllowed(details.externalURL)) {
+        if (permission === 'openExternal' && details && details.externalURL) {
             return cb(true)
         }
 
