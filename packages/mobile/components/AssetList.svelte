@@ -22,7 +22,8 @@
 </script>
 
 {#if assets}
-    <div class="asset-list h-full flex flex-auto flex-col flex-grow flex-shrink-0">
+    <asset-list-container class="asset-list h-full flex flex-auto flex-col flex-grow flex-shrink-0">
+        <asset-list-header class="sticky pb-4" />
         {#if assetList.length > 0}
             <VirtualList items={assetList} let:item>
                 <AssetTile classes="mb-2" onClick={() => onAssetTileClick(item)} asset={item} />
@@ -32,5 +33,5 @@
                 <Text secondary>{localize('general.noAssets')}</Text>
             </div>
         {/if}
-    </div>
+    </asset-list-container>
 {/if}
