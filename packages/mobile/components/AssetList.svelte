@@ -1,8 +1,10 @@
 <script lang="ts">
     import { localize } from '@core/i18n'
     import { IAccountAssets, IAsset } from '@core/wallet'
+    import { assetFilter } from '@core/wallet/stores'
     import VirtualList from '@sveltejs/svelte-virtual-list'
     import { AssetTile, Text } from 'shared/components'
+    import { Filter } from '../components'
 
     export let assets: IAccountAssets
     export let onAssetTileClick: (asset: IAsset) => unknown = () => {}
@@ -23,7 +25,9 @@
 
 {#if assets}
     <asset-list-container class="asset-list h-full flex flex-auto flex-col flex-grow flex-shrink-0">
-        <asset-list-header class="sticky pb-4" />
+        <asset-list-header class="sticky pb-4">
+            <Filter filterStore={assetFilter} />
+        </asset-list-header>
         {#if assetList.length > 0}
             <VirtualList items={assetList} let:item>
                 <AssetTile classes="mb-2" onClick={() => onAssetTileClick(item)} asset={item} />
